@@ -1,0 +1,165 @@
+prompt ____________________________________________________________________________________________
+prompt
+prompt Archivo....:14071902_2.dml
+prompt Caso.......:14071902
+prompt Descripción:Creación opciones de menú para Renta Varible.
+prompt Autor......:JLG
+prompt Fecha......:2014/11/25
+prompt ____________________________________________________________________________________________
+
+
+prompt _________________________________________________
+prompt
+prompt Creando opción de menú categorías Val AXA - Renta Variable
+prompt ________________________________________________
+
+begin
+  insert into agmodulos(mod_aplicacion,mod_codigo   ,mod_mod_codigo,mod_descripcion           ,mod_tipo,mod_ejecutable,mod_estado,mod_orden)
+                 values('PFRVAR'     ,'REG_VAL_100','REG_VAL'     ,'Categorías AXA','F'     ,'PFAXA002'    ,'A'       ,'010510');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Opción de menú REG_VAL_100 ya existe.');
+  when others then
+    dbms_output.put_line('Error creando opción de menú REG_VAL_100 ['||sqlerrm||']');
+end;
+/
+prompt _________________________________________________
+prompt
+prompt Creando opción de menú Categorización AXA - Renta Variable
+prompt ________________________________________________
+
+begin
+  insert into agmodulos(mod_aplicacion,mod_codigo   ,mod_mod_codigo,mod_descripcion           ,mod_tipo,mod_ejecutable,mod_estado,mod_orden)
+                 values('PFRVAR'     ,'TRA_TIT_120','TRA_TIT'     ,'Recategorización AXA'    ,'F'     ,'PFAXA003'    ,'A'       ,'030211');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Opción de menú TRA_TIT_120 ya existe.');
+  when others then
+    dbms_output.put_line('Error creando opción de menú TRA_TIT_120 ['||sqlerrm||']');
+end;
+/
+
+prompt _____________________________________________________
+prompt
+prompt Creando opción de menú categoría AXA por portafolio.- Renta Variable
+prompt _____________________________________________________
+
+begin
+  insert into agmodulos(mod_aplicacion,mod_codigo   ,mod_mod_codigo,mod_descripcion           ,mod_tipo,mod_ejecutable,mod_estado,mod_orden)
+                 values('PFRVAR'     ,'REG_EMP_200','REG_EMP'     ,'Clasificación Portafolios AXA'    ,'F'     ,'PFAXA004'    ,'A'       ,'010215');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Opción de menú REG_EMP_200 ya existe.');
+  when others then
+    dbms_output.put_line('Error creando opción de menú REG_EMP_200 ['||sqlerrm||']');
+end;
+/
+
+prompt _________________________________________________
+prompt
+prompt Creando opción de menú Característiscas Val AXA
+prompt ________________________________________________
+
+begin
+  insert into agmodulos(mod_aplicacion,mod_codigo   ,mod_mod_codigo,mod_descripcion           ,mod_tipo,mod_ejecutable,mod_estado,mod_orden)
+                 values('PFRVAR'     ,'REG_VAL_110','REG_VAL'     ,'Característiscas Val AXA','F'     ,'PFAXA005'    ,'A'       ,'010511');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Opción de menú REG_VAL_110 ya existe.');
+  when others then
+    dbms_output.put_line('Error creando opción de menú REG_VAL_110 ['||sqlerrm||']');
+end;
+/
+
+prompt _____________________________________________________
+prompt
+prompt Creando registro de informe AXSEM050.
+prompt _____________________________________________________
+
+begin
+  insert into agreportes(rep_aplicacion,rep_mod_codigo,rep_descripcion              ,rep_ejecutable,rep_estado,rep_tipo,rep_bloque)
+                  values('PFRVAR'     ,'PPL_INF_030' ,'Compras y ventas entre 2 fechas AXXA','AXSEM050'   ,'A'       ,'R'     ,'FECHA_DESDE_HASTA');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Informe AXSEM050 ya existe');
+  when others then
+    dbms_output.put_line('Error creando opción de informe AXSEM050 ['||sqlerrm||']');
+end;
+/
+
+
+prompt _____________________________________________________
+prompt
+prompt Creando registro de informe AXMMC610.
+prompt _____________________________________________________
+
+begin
+  insert into agreportes(rep_aplicacion,rep_mod_codigo,rep_descripcion              ,rep_ejecutable,rep_estado,rep_tipo,rep_bloque)
+                  values('PFRVAR'     ,'PPL_INF_070' ,'Soporte Contable entre 2 fechas AXXA','AXMMC610'   ,'A'       ,'R'     ,'FECHA_DESDE_HASTA');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Informe AXMMC610 ya existe');
+  when others then
+    dbms_output.put_line('Error creando opción de informe AXMMC610 ['||sqlerrm||']');
+end;
+/
+
+
+prompt _____________________________________________________
+prompt
+prompt Creando registro de informe axcli575.
+prompt _____________________________________________________
+
+begin
+  insert into agreportes(rep_aplicacion,rep_mod_codigo,rep_descripcion              ,rep_ejecutable,rep_estado,rep_tipo,rep_bloque)
+                  values('PFRVAR'     ,'PPL_INF_020' ,'Causacion a una fecha AXXA','AXCLI575'   ,'A'       ,'R'     ,'FECHA_FIJA_MONEDA');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Informe AXCLI575 ya existe');
+  when others then
+    dbms_output.put_line('Error creando opción de informe AXCLI575 ['||sqlerrm||']');
+end;
+/
+
+
+
+prompt _____________________________________________________
+prompt
+prompt Creando registro de informe AXMVR560.
+prompt _____________________________________________________
+
+begin
+  insert into agreportes(rep_aplicacion,rep_mod_codigo,rep_descripcion              ,rep_ejecutable,rep_estado,rep_tipo,rep_bloque)
+                  values('PFRVAR'     ,'PPL_INF_030' ,'Entradas y Salidas de un periodo AXA','AXMVR560'   ,'A'       ,'R'     ,'FECHA_DESDE_HASTA');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Informe AXMVR560 ya existe');
+  when others then
+    dbms_output.put_line('Error creando opción de informe AXMVR560 ['||sqlerrm||']');
+end;
+/
+
+
+prompt _____________________________________________________
+prompt
+prompt Creando registro de informe AXMVR578.
+prompt _____________________________________________________
+
+begin
+  insert into agreportes(rep_aplicacion,rep_mod_codigo,rep_descripcion              ,rep_ejecutable,rep_estado,rep_tipo,rep_bloque)
+                  values('PFRVAR'     ,'PPL_INF_030' ,'Ejecucion por Trader Colpatria AXXA','AXMVR578'   ,'A'       ,'R'     ,'FECHA_DESDE_HASTA');
+exception
+  when dup_val_on_index then
+    dbms_output.put_line('Informe AXMVR578 ya existe');
+  when others then
+    dbms_output.put_line('Error creando opción de informe AXMVR578 ['||sqlerrm||']');
+end;
+/
+
+
+
+commit;
+prompt ____________________________________________________________________________________________
+prompt
+prompt Fin de la ejecución 14071902_2.dml
+prompt ____________________________________________________________________________________________

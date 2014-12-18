@@ -1,0 +1,84 @@
+-------------------------------------------------------------------
+-- Archivo : INVALIDO.PF
+-- Autor   : Oscar E. Rivas C.
+-- Fecha   : Mayo 5 de 2000.
+-- Objetivo: Recompila los procedimientos invalidos
+-------------------------------------------------------------------
+set serveroutput on size 1000000
+
+column cuantos new_value _cuantos
+select
+
+Prompt Recompilando objetos invalidos en la base de datos.
+Prompt .
+Prompt Este proceso puede tardar varios minutos.  Espere por favor ...
+declare
+  t_objeto number := 0;
+  cursor c_invalidos is
+    select object_id                                            objeto
+          ,object_name                                          nombre
+	    ,decode(object_type
+	           ,'PACKAGE BODY','alter PACKAGE '||object_name||' COMPILE BODY' 
+                                  ,'alter '||object_type||' '||object_name||' COMPILE '
+                   )                                            comando
+   	    ,object_type tipo
+      from obj
+     where to_number(object_id) > nvl(to_number(data_object_id),0)
+       and status = 'INVALID'
+       and object_type in ('PROCEDURE','FUNCTION','VIEW','PACKAGE','PACKAGE BODY','TRIGGER')
+     order by timestamp
+  ;
+
+
+  DDL_CURSOR integer;
+  t_comando     varchar2(200);
+  t_iteraciones number;
+  t_contador  number;
+  t_validar   number;
+  t_entro     varchar2(1) := 'N';
+BEGIN
+
+  t_contador := 0;
+
+  -- 1. Hallar el maximo numero de invalido, para iterar maximo este numero
+  select count(*)
+    into t_iteraciones
+    from obj
+   where status = 'INVALID'
+     and object_type in ('PROCEDURE','FUNCTION','VIEW','PACKAGE','PACKAGE BODY','TRIGGER')
+  ;
+
+  -- Buscar invalidos y recompilarlos
+  ddl_cursor := dbms_sql.open_cursor;
+  while t_iteraciones > 0 and t_contador <= t_iteraciones loop
+    t_entro := 'N';
+    for ici in c_invalidos loop
+      t_entro := 'S';
+      -- Mirar si esta invalido, pues la recompilacion de otro lo pudo
+      -- dejar valido
+      select count(*)
+        into t_validar
+        from obj
+       where object_id = ici.objeto
+         and status = 'INVALID'
+      ;
+      if t_validar = 1 then
+        t_comando := ici.comando;
+        dbms_output.put_line('Recompilado: '||ici.nombre||' de tipo: '||ici.tipo);
+        begin
+          dbms_sql.parse(DDL_CURSOR, t_comando, dbms_sql.native);
+        exception when others then null;
+        end;
+      end if;
+      t_contador := t_contador + 1;
+    end loop;  -- Del for
+    if t_entro = 'N' then exit; end if;
+  end loop;    -- Del while
+  for ici in c_invalidos loop
+    dbms_output.put_line('Ha quedado invalido: '||ici.nombre);
+  end loop;
+  exception when others then null;
+end;
+/
+set serveroutput off
+
